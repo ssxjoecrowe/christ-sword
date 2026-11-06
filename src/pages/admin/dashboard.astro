@@ -1,0 +1,86 @@
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Admin Dashboard | Christ Sword</title>
+    <style>
+      body { font-family: Georgia, serif; background: #1a1a2e; color: #f0e6d2; margin: 0; }
+      .navbar { background: #16213e; border-bottom: 2px solid #c5a059; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+      .brand { font-weight: 800; color: #c5a059; font-size: 1.25rem; }
+      .navbar a { color: #c5a059; text-decoration: none; margin-left: 1.5rem; font-weight: 600; }
+      .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+      h1 { color: #c5a059; margin-bottom: 2rem; }
+      table { width: 100%; border-collapse: collapse; background: #16213e; border: 1px solid #2a3a5c; border-radius: 8px; overflow: hidden; }
+      th, td { padding: 1rem; text-align: left; border-bottom: 1px solid #2a3a5c; }
+      th { background: #0f172a; color: #c5a059; text-transform: uppercase; font-size: 0.85rem; }
+      .btn-delete { background: #ff6b6b; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 4px; cursor: pointer; font-size: 0.85rem; }
+      .empty { text-align: center; padding: 3rem; color: #888; }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="brand">Christ Sword Admin</div>
+      <div>
+        <a href="/">View Site</a>
+        <a href="#" id="logoutBtn">Logout</a>
+      </div>
+    </nav>
+    <div class="container">
+      <h1>Watch Reports</h1>
+      <div id="loading">Loading reports...</div>
+      <table id="reportsTable" style="display:none;">
+        <thead>
+          <tr><th>ID</th><th>Type</th><th>Location</th><th>Name</th><th>Submitted</th><th>Details</th><th>Action</th></tr>
+        </thead>
+        <tbody id="reportsBody"></tbody>
+      </table>
+      <div id="emptyState" class="empty" style="display:none;">No reports yet.</div>
+    </div>
+    <script>
+      async function loadReports() {
+        const res = await fetch('/api/admin/reports');
+        if (res.status === 401) { window.location.href = '/admin/login'; return; }
+        const data = await res.json();
+        const body = document.getElementById('reportsBody');
+        const table = document.getElementById('reportsTable');
+        const empty = document.getElementById('emptyState');
+        document.getElementById('loading').style.display = 'none';
+        if (!data.reports || data.reports.length === 0) { empty.style.display = 'block'; return; }
+        table.style.display = 'table';
+        body.innerHTML = data.reports.map(r => `
+          <tr>
+            <td>${r.id}</td>
+            <td>${r.type}</td>
+            <td>${r.location || '-'}</td>
+            <td>${r.name || 'Anonymous'}</td>
+            <td>${new Date(r.created_at).toLocaleDateString()}</td>
+            <td>${(r.details || '').substring(0, 120)}</td>
+            <td><button class="btn-delete" data-id="${r.id}">Delete</button></td>
+          </tr>
+        `).join('');
+      }
+
+      document.getElementById('reportsBody').addEventListener('click', async (e) => {
+        if (!e.target.classList.contains('btn-delete')) return;
+        const id = e.target.dataset.id;
+        if (!confirm('Delete this report?')) return;
+        const res = await fetch('/api/admin/reports', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: Number(id) }),
+        });
+        if (res.ok) loadReports();
+        else alert('Failed to delete');
+      });
+
+      document.getElementById('logoutBtn').addEventListener('click', async (e) => {
+        e.preventDefault();
+        await fetch('/api/admin/logout', { method: 'POST' });
+        window.location.href = '/admin/login';
+      });
+
+      loadReports();
+    </script>
+  </body>
+</html>

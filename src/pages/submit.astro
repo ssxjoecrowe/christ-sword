@@ -1,0 +1,84 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Submit | Christ Sword</title>
+    <style>
+      body { font-family: Georgia, serif; background: #1a1a2e; color: #f0e6d2; line-height: 1.6; margin: 0; }
+      .container { max-width: 600px; margin: 0 auto; padding: 2rem 1.5rem; }
+      h1 { color: #c5a059; margin-bottom: 2rem; }
+      form { background: #16213e; border: 1px solid #2a3a5c; padding: 2rem; border-radius: 8px; }
+      label { display: block; margin-bottom: 0.5rem; font-weight: 600; color: #c5a059; }
+      input, select, textarea { width: 100%; padding: 0.75rem; margin-bottom: 1.25rem; background: #0f172a; border: 1px solid #334155; color: #f0e6d2; border-radius: 4px; font-family: inherit; box-sizing: border-box; }
+      input:focus, textarea:focus { outline: 2px solid #c5a059; }
+      button { background: #c5a059; color: #16213e; padding: 0.9rem 1.5rem; border: none; border-radius: 4px; font-weight: 800; cursor: pointer; width: 100%; font-size: 1rem; }
+      button:hover { background: #d4a96b; }
+      .note { margin-top: 1.5rem; font-size: 0.9rem; text-align: center; }
+    </style>
+  </head>
+  <body>
+    <Header title="Christ Sword" />
+    <main>
+      <div class="container">
+        <h1>Submit a Report</h1>
+        <form id="submitForm">
+          <label for="name">Your Name (optional)</label>
+          <input type="text" id="name" name="name" />
+
+          <label for="email">Email (optional)</label>
+          <input type="email" id="email" name="email" />
+
+          <label for="type">Report Type</label>
+          <select id="type" name="type">
+            <option value="persecution">Persecution of Christians</option>
+            <option value="false-teaching">False Teaching / Doctrine</option>
+            <option value="church-need">Church or Ministry Need</option>
+            <option value="other">Other</option>
+          </select>
+
+          <label for="location">Country / Location</label>
+          <input type="text" id="location" name="location" />
+
+          <label for="details">Details</label>
+          <textarea id="details" name="details" rows="5" required></textarea>
+
+          <button type="submit">Submit Report</button>
+        </form>
+        <p class="note" id="formNote"></p>
+      </div>
+    </main>
+    <Footer />
+    <script>
+      document.getElementById('submitForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const fd = new FormData(e.target);
+        const body = {
+          name: fd.get('name'),
+          email: fd.get('email'),
+          type: fd.get('type'),
+          location: fd.get('location'),
+          details: fd.get('details'),
+        };
+        const note = document.getElementById('formNote');
+        const res = await fetch('/api/reports', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+        if (res.ok) {
+          note.style.color = '#4ade80';
+          note.textContent = 'Report submitted. Thank you for standing watch.';
+          e.target.reset();
+        } else {
+          note.style.color = '#ff6b6b';
+          note.textContent = 'Failed to submit. Try again.';
+        }
+      });
+    </script>
+  </body>
+</html>

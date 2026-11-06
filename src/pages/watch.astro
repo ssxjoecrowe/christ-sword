@@ -1,0 +1,36 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Watch | Christ Sword</title>
+    <style>
+      body { font-family: Georgia, serif; background: #1a1a2e; color: #f0e6d2; line-height: 1.6; margin: 0; }
+      .container { max-width: 1000px; margin: 0 auto; padding: 2rem 1.5rem; }
+      h1 { color: #c5a059; border-bottom: 2px solid #c5a059; padding-bottom: 0.5rem; margin-bottom: 2rem; }
+      .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+      .card { background: #16213e; border: 1px solid #2a3a5c; padding: 1.5rem; border-radius: 8px; }
+      .card h3 { color: #f0e6d2; margin-bottom: 0.75rem; }
+      .meta { font-size: 0.85rem; color: #888; margin-bottom: 0.75rem; }
+      .card p { font-size: 0.95rem; opacity: 0.9; }
+    </style>
+  </head>
+  <body>
+    <Header title="Christ Sword" />
+    <main>
+      <div class="container">
+        <h1>Current Watch</h1>
+        <div class="grid">
+          <article class="card"><div class="meta">Persecution • Nigeria</div><h3>Church Attack in Kaduna State</h3><p>Believers gathered for worship were attacked. Pray for the wounded and the families of those lost.</p></article>
+          <article class="card"><div class="meta">Persecution • North Korea</div><h3>Underground Believers Imprisoned</h3><p>Reports continue of house church leaders detained for possessing Bibles. Remember them in prayer daily.</p></article>
+          <article class="card"><div class="meta">Doctrine • Global</div><h3>False Teaching Alert</h3><p>Prosperity gospel preachers misleading new believers. Test every spirit against Scripture.</p></article>
+        </div>
+      </div>
+    </main>
+    <Footer />
+  </body>
+</html>

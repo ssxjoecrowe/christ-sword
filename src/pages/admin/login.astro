@@ -1,0 +1,49 @@
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Admin Login | Christ Sword</title>
+    <style>
+      body { font-family: Georgia, serif; background: #1a1a2e; color: #f0e6d2; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+      .card { background: #16213e; border: 1px solid #2a3a5c; padding: 2rem; border-radius: 8px; width: 100%; max-width: 400px; }
+      h1 { color: #c5a059; text-align: center; margin-bottom: 1.5rem; }
+      label { display: block; margin-bottom: 0.5rem; font-weight: 600; color: #c5a059; }
+      input { width: 100%; padding: 0.75rem; margin-bottom: 1rem; background: #0f172a; border: 1px solid #334155; color: #f0e6d2; border-radius: 4px; box-sizing: border-box; }
+      button { background: #c5a059; color: #16213e; padding: 0.8rem 1.5rem; border: none; border-radius: 4px; font-weight: 800; cursor: pointer; width: 100%; }
+      .error { color: #ff6b6b; margin-bottom: 1rem; text-align: center; font-size: 0.9rem; display: none; }
+      .back { text-align: center; margin-top: 1rem; }
+      .back a { color: #c5a059; text-decoration: none; }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h1>Christ Sword Admin</h1>
+      <div id="error" class="error"></div>
+      <form id="loginForm">
+        <label for="password">Admin Password</label>
+        <input type="password" id="password" required />
+        <button type="submit">Sign In</button>
+      </form>
+      <div class="back"><a href="/">← Back to Home</a></div>
+    </div>
+    <script>
+      document.getElementById('loginForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const errorEl = document.getElementById('error');
+        errorEl.style.display = 'none';
+        const res = await fetch('/api/admin/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password: document.getElementById('password').value }),
+        });
+        if (res.ok) {
+          window.location.href = '/admin/dashboard';
+        } else {
+          errorEl.style.display = 'block';
+          errorEl.textContent = 'Invalid password';
+        }
+      });
+    </script>
+  </body>
+</html>

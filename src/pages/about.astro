@@ -1,0 +1,31 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>About | Christ Sword</title>
+    <style>
+      body { font-family: Georgia, serif; background: #1a1a2e; color: #f0e6d2; line-height: 1.6; margin: 0; }
+      .container { max-width: 800px; margin: 0 auto; padding: 2rem 1.5rem; }
+      h1 { color: #c5a059; border-bottom: 2px solid #c5a059; padding-bottom: 0.5rem; margin-bottom: 2rem; }
+      p { margin-bottom: 1.25rem; }
+      .verse { font-style: italic; color: #c5a059; border-left: 3px solid #c5a059; padding-left: 1rem; margin: 2rem 0; }
+    </style>
+  </head>
+  <body>
+    <Header title="Christ Sword" />
+    <main>
+      <div class="container">
+        <h1>About Christ Sword</h1>
+        <p>Christ Sword is a Christian watchdog ministry standing for truth, praying for the persecuted, and contending for the faith once delivered to the saints.</p>
+        <p>Our name comes from Scripture: the Word of God is "sharper than any double-edged sword" (Hebrews 4:12), and we are called to "contend for the faith" (Jude 1:3).</p>
+        <div class="verse">"Finally, be strong in the Lord and in his mighty power. Put on the full armor of God." — Ephesians 6:10–11</div>
+      </div>
+    </main>
+    <Footer />
+  </body>
+</html>
